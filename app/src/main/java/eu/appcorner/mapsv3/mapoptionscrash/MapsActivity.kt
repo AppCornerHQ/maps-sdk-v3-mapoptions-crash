@@ -2,10 +2,8 @@ package eu.appcorner.mapsv3.mapoptionscrash
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.libraries.maps.CameraUpdateFactory
-import com.google.android.libraries.maps.GoogleMap
-import com.google.android.libraries.maps.OnMapReadyCallback
-import com.google.android.libraries.maps.SupportMapFragment
+import com.google.android.libraries.maps.*
+import com.google.android.libraries.maps.model.CameraPosition
 import com.google.android.libraries.maps.model.LatLng
 import com.google.android.libraries.maps.model.MarkerOptions
 
@@ -18,7 +16,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_maps)
 
         val mapFragment = if (savedInstanceState == null) {
-            SupportMapFragment.newInstance().also {
+            val options = GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(LatLng(48.8583736, 2.2922926), 10.0f))
+
+            SupportMapFragment.newInstance(options).also {
                 supportFragmentManager.beginTransaction().replace(R.id.map_container, it).commit()
             }
         } else
@@ -33,6 +33,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Paris and move the camera
         val paris = LatLng(48.8583736, 2.2922926)
         googleMap.addMarker(MarkerOptions().position(paris).title("Marker in Paris"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15.0f))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(paris, 15.0f))
     }
 }
