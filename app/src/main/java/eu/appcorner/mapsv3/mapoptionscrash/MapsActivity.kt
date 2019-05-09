@@ -17,7 +17,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setContentView(R.layout.activity_maps)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = if (savedInstanceState == null) {
+            SupportMapFragment.newInstance().also {
+                supportFragmentManager.beginTransaction().replace(R.id.map_container, it).commit()
+            }
+        } else
+            supportFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment
+
         mapFragment.getMapAsync(this)
     }
 
